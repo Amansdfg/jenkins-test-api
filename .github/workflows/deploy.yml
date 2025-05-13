@@ -37,34 +37,34 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "Checking if target directory exists: ${{ secrets.TARGET_DIR }}/target"
-            if [ -d "${{ secrets.TARGET_DIR }}/target" ]; then
-              echo "✅ Directory exists."
-            else
-              echo "❌ Directory does not exist!"
-              exit 1
-            fi
-            
-            echo "Listing contents of target directory:"
-            ls -la ${{ secrets.TARGET_DIR }}/target
-            
-            cd ${{ secrets.TARGET_DIR }}/target
-            JAR_FILE=$(ls *.jar | head -n 1)
-            
-            if [ -z "$JAR_FILE" ]; then
-              echo "❌ No JAR file found!"
-              exit 1
-            else
-              echo "✅ Found JAR file: $JAR_FILE"
-            fi
-            
-            echo "Killing any previous Java process..."
-            pkill -f 'java -jar' || true
-            
-            echo "Starting new JAR process..."
-            nohup java -jar "$JAR_FILE" > ../output.log 2>&1 &
-            
-            # Detach background process from terminal
-            disown
-            
-            echo "✅ Deployment script finished."
+            bash -c '
+              echo "🔍 Checking if target directory exists: ${{ secrets.TARGET_DIR }}/target"
+              if [ -d "${{ secrets.TARGET_DIR }}/target" ]; then
+                echo "✅ Directory exists."
+              else
+                echo "❌ Directory does not exist!"
+                exit 1
+              fi
+
+              echo "📦 Listing JAR files:"
+              ls -la ${{ secrets.TARGET_DIR }}/target
+
+              cd ${{ secrets.TARGET_DIR }}/target
+              JAR_FILE=$(ls *.jar | head -n 1)
+
+              if [ -z "$JAR_FILE" ]; then
+                echo "❌ No JAR file found!"
+                exit 1
+              else
+                echo "✅ Found JAR file: $JAR_FILE"
+              fi
+
+              echo "🛑 Killing existing Java processes..."
+              pkill -f "java -jar" || true
+
+              echo "🚀 Starting application..."
+              nohup java -jar "$JAR_FILE" > ../output.log 2>&1 &
+
+              echo "✅ App launched in background."
+              exit 0
+            '
