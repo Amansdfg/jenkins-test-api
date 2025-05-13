@@ -30,7 +30,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "target/*.jar"
           target: ${{ secrets.TARGET_DIR }}
-
       - name: SSH and Run App
         uses: appleboy/ssh-action@master
         with:
@@ -38,11 +37,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            ls -la ${{ secrets.TARGET_DIR }}
-            java -version
-
             pkill -f 'java -jar' || true
-            cd ${{ secrets.TARGET_DIR }}
-            nohup java -jar *.jar > output.log 2>&1 < /dev/null &
-            disown
-            
+            cd ${{ secrets.TARGET_DIR }}/target
+            nohup java -jar *.jar > ../output.log 2>&1 < /dev/null &
+            echo "App started in background"
