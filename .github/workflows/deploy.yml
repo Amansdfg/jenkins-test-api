@@ -37,7 +37,32 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            pkill -f 'java -jar' || true
+            echo "Checking if target directory exists: ${{ secrets.TARGET_DIR }}/target"
+            if [ -d "${{ secrets.TARGET_DIR }}/target" ]; then
+              echo "✅ Directory exists."
+            else
+              echo "❌ Directory does not exist!"
+              exit 1
+            fi
+            
+            echo "Listing contents of target directory:"
+            ls -la ${{ secrets.TARGET_DIR }}/target
+            
             cd ${{ secrets.TARGET_DIR }}/target
-            nohup java -jar *.jar > ../output.log 2>&1 < /dev/null &
-            echo "App started in background"
+            JAR_FILE=$(ls *.jar | head -n 1)
+            
+            if [ -z "$JAR_FILE" ]; then
+              echo "❌ No JAR file found!"
+              exit 1
+            else
+              echo "✅ Found JAR file: $JAR_FILE"
+            fi
+            
+            echo "Killing any previous Java process..."
+            pkill -f 'java -jar' || true
+            
+            echo "Starting new JAR process..."
+            nohup java -jar "$JAR_FILE" > ../output.log 2>&1 < /dev/null &
+            sleep 2
+            
+            echo "✅ Application started successfully."
