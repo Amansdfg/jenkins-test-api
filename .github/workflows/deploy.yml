@@ -36,35 +36,75 @@ jobs:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            bash -c '
-              echo "🔍 Checking if target directory exists: ${{ secrets.TARGET_DIR }}/target"
-              if [ -d "${{ secrets.TARGET_DIR }}/target" ]; then
-                echo "✅ Directory exists."
-              else
-                echo "❌ Directory does not exist!"
-                exit 1
-              fi
-
-              echo "📦 Listing JAR files:"
-              ls -la ${{ secrets.TARGET_DIR }}/target
-
-              cd ${{ secrets.TARGET_DIR }}/target
-              JAR_FILE=$(ls *.jar | head -n 1)
-
-              if [ -z "$JAR_FILE" ]; then
-                echo "❌ No JAR file found!"
-                exit 1
-              else
-                echo "✅ Found JAR file: $JAR_FILE"
-              fi
-
-              echo "🛑 Killing existing Java processes..."
-              pkill -f "java -jar" || true
-
-              echo "🚀 Starting application..."
-              nohup java -jar "$JAR_FILE" > ../output.log 2>&1 &
-
-              echo "✅ App launched in background."
-              exit 0
-            '
+          script: |          
+            TARGET_DIRECTORY="***/target"  # Replace with the actual directory path
+            JAR_FILE="$TARGET_DIRECTORY/$(ls $TARGET_DIRECTORY/*.jar | head -n 1)"
+  
+            echo "🔍 Verifying if the target directory exists..."
+            if [ -d "$TARGET_DIRECTORY" ]; then
+            echo "✅ Directory exists."
+            else
+            echo "❌ Directory does not exist!"
+            exit 1
+            fi
+  
+            echo "📦 Listing JAR files..."
+            ls -la "$TARGET_DIRECTORY"
+  
+            # Check if JAR file exists
+            if [ -z "$JAR_FILE" ]; then
+            echo "❌ No JAR file found in the target directory!"
+            exit 1
+            else
+            echo "✅ Found JAR file: $JAR_FILE"
+            fi
+  
+            # Verify if the directory has write permissions
+            echo "🔍 Verifying write permissions for target directory..."
+            if ! [ -w "$TARGET_DIRECTORY" ]; then
+            echo "❌ No write permission to the target directory!"
+            exit 1
+            fi
+  
+            # Check Java version and environment
+            echo "🔍 Verifying Java version..."
+            java -version
+            if [ $? -ne 0 ]; then
+            echo "❌ Java is not installed or not properly configured!"
+            exit 1
+            fi
+  
+            # Kill any existing Java processes running the JAR file
+            echo "🛑 Killing existing Java processes..."
+            PID=$(pgrep -f "java -jar $JAR_FILE")
+            if [ -n "$PID" ]; then
+            echo "✅ Killing Java process with PID: $PID"
+            kill -9 "$PID" || true
+            else
+            echo "❌ No Java process found."
+            fi
+  
+            # Run the JAR file in the background using nohup
+            echo "🚀 Starting application in background..."
+            nohup java -jar "$JAR_FILE" > "$TARGET_DIRECTORY/output.log" 2>&1 &
+  
+            # Check if the application started successfully
+            if [ $? -eq 0 ]; then
+            echo "✅ App launched successfully."
+            else
+            echo "❌ Failed to launch app."
+            exit 1
+            fi
+  
+            # Give feedback on whether the process is running
+            echo "🔍 Verifying if the application is running..."
+            ps aux | grep "java -jar $JAR_FILE" | grep -v grep
+  
+            if [ $? -eq 0 ]; then
+            echo "✅ Application is running."
+            else
+            echo "❌ Application failed to start."
+            exit 1
+            fi
+  
+            echo "📝 Application logs can be found at: $TARGET_DIRECTORY/output.log"
