@@ -39,4 +39,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             pkill -f 'java -jar' || true
-            nohup java -jar ${{ secrets.TARGET_DIR }}/*.jar > output.log 2>&1 &
+            cd ${{ secrets.TARGET_DIR }}
+            nohup java -jar *.jar > output.log 2>&1 < /dev/null &
+            disown
