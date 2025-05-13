@@ -62,7 +62,9 @@ jobs:
             pkill -f 'java -jar' || true
             
             echo "Starting new JAR process..."
-            nohup java -jar "$JAR_FILE" > ../output.log 2>&1 < /dev/null &
-            sleep 2
+            nohup java -jar "$JAR_FILE" > ../output.log 2>&1 &
             
-            echo "✅ Application started successfully."
+            # Detach background process from terminal
+            disown
+            
+            echo "✅ Deployment script finished."
