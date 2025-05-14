@@ -39,7 +39,7 @@ jobs:
           script: |
             mkdir -p ${{ secrets.TARGET_DIR }}
 
-           # Перейти в целевой каталог
+            # Перейти в целевой каталог
             cd ${{ secrets.TARGET_DIR }}
   
             # Остановить старый процесс (если нужно)
