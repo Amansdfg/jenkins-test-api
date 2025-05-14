@@ -41,5 +41,3 @@ jobs:
             cd ${{ secrets.TARGET_DIR }}
             # Run the JAR file
             java -jar jenkinsApiTest-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
-            # Optional: If you want to ensure the process stays alive, you can use tmux or screen (uncomment the following lines)
-            # screen -S app-session java -jar your-application-name.jar > app.log 2>&1 &
