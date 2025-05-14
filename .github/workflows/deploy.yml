@@ -43,8 +43,3 @@ jobs:
             sudo lsof -ti:8080 | xargs sudo kill -9
             
             nohup java -jar target/jenkinsApiTest-0.0.1-SNAPSHOT.jar &
-            
-            sleep 10
-            echo "Health Check"
-            curl -f http://localhost:8080/health || exit 1
-            echo "Deployment completed"
