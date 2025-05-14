@@ -37,18 +37,35 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            echo "Starting script execution on EC2 instance..."
             mkdir -p ${{ secrets.TARGET_DIR }}
+            echo "Created target directory: ${{ secrets.TARGET_DIR }}"
 
-            # Перейти в целевой каталог
             cd ${{ secrets.TARGET_DIR }}
-  
-            # Остановить старый процесс (если нужно)
-            pkill -f jenkinsApiTest || true
-  
-            # Удалить старый JAR
-            rm -f jenkinsApiTest-0.0.1-SNAPSHOT.jar
-  
-            # Копировать новый JAR (если используется отдельный scp шаг)
-  
-            # Запустить новое приложение
+            echo "Changed directory to: ${{ secrets.TARGET_DIR }}"
+
+            # Kill any existing app
+            echo "Killing any existing app..."
+            pkill -f jenkinsApiTest || echo "No process found to kill."
+
+            # Remove old JAR
+            echo "Removing old JAR..."
+            rm -f jenkinsApiTest-0.0.1-SNAPSHOT.jar || echo "No old JAR to remove."
+
+            # Rename newly copied JAR if needed
+            echo "Renaming copied JAR..."
+            mv target/jenkinsApiTest-0.0.1-SNAPSHOT.jar . || echo "JAR file already renamed."
+
+            # Start new process in background using nohup
+            echo "Starting the new app in background..."
             nohup java -jar jenkinsApiTest-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+
+            echo "App started in background. Sleeping to ensure it starts properly..."
+            sleep 5
+            echo "Finished sleeping."
+
+            # Check if the application is running
+            echo "Checking if the application is running on port 8080..."
+            curl -I http://localhost:8080/hello || echo "Failed to connect to the app on port 8080."
+
+            echo "App deployed and started successfully."
