@@ -44,5 +44,5 @@ jobs:
             echo "Changed directory to: ${{ secrets.TARGET_DIR }}"
  
             sudo lsof -ti:8080 | xargs sudo kill -9
-          
-            java -jar target/jenkinsApiTest-0.0.1-SNAPSHOT.jar &
+            
+            nohup java -jar target/jenkinsApiTest-0.0.1-SNAPSHOT.jar &
