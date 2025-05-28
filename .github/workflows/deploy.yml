@@ -39,6 +39,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            
             cd ${{ secrets.TARGET_DIR }}
             
             sudo lsof -ti:8080 | xargs sudo kill -9
