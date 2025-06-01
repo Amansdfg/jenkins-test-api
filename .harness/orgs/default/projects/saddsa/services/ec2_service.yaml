@@ -3,7 +3,18 @@ service:
   identifier: ec2_service
   serviceDefinition:
     type: Ssh
-    spec: {}
+    spec:
+      artifacts:
+        primary:
+          primaryArtifactRef: sasdasdasd
+          sources:
+            - spec:
+                connectorRef: dockerhubkz
+                imagePath: 230103375/spring-test
+                tag: <+input>
+                digest: ""
+              identifier: sasdasdasd
+              type: DockerRegistry
   gitOpsEnabled: false
   orgIdentifier: default
   projectIdentifier: saddsa
