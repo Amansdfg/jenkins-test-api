@@ -107,7 +107,6 @@ pipeline:
                       - name: run_deploy
                         identifier: run_deploy
                         type: Script
-                        workingDirectory: /home/ec2-user
                         command: |
                           echo "Pulling Docker image..."
                           docker pull 230103375/spring-test:latest
