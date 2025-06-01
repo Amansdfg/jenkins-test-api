@@ -1,0 +1,9 @@
+service:
+  name: ec2 service
+  identifier: ec2_service
+  serviceDefinition:
+    type: Ssh
+    spec: {}
+  gitOpsEnabled: false
+  orgIdentifier: default
+  projectIdentifier: saddsa
