@@ -11,9 +11,9 @@ service:
             - spec:
                 connectorRef: dockerhubkz
                 imagePath: 230103375/spring-test
-                tag: <+input>
+                tag: latest
                 digest: ""
-              identifier: sasdasdasd
+              identifier: docker_hub_source
               type: DockerRegistry
   gitOpsEnabled: false
   orgIdentifier: default
