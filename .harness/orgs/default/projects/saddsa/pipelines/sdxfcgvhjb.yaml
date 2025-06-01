@@ -68,7 +68,7 @@ pipeline:
                   artifacts:
                     primary:
                       sources:
-                        - identifier: sasdasdasd
+                        - identifier: docker_hub_source
                           type: DockerRegistry
                           spec:
                             tag: <+input>
