@@ -47,7 +47,7 @@ pipeline:
                     connectorRef: dockerhubkz
                     repo: 230103375/spring-test
                     tags:
-                      - lastest
+                      - latest
                     dockerfile: Dockerfile
                     context: .
           buildIntelligence:
