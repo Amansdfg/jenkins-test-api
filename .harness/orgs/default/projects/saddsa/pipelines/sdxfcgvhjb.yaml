@@ -43,7 +43,7 @@ pipeline:
                   identifier: DockerBuildPush
                   type: BuildAndPushDockerRegistry
                   spec:
-                    connectorRef: dockerhub-kz
+                    connectorRef: dockerhubkz
                     repo: 230103375/spring-test
                     tags:
                       - latest
