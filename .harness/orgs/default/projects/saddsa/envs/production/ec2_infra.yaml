@@ -1,0 +1,8 @@
+environment:
+  name: ec2_infra
+  identifier: ec2_infra
+  description: ""
+  tags: {}
+  type: Production
+  orgIdentifier: default
+  projectIdentifier: saddsa
