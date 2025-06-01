@@ -65,7 +65,7 @@ pipeline:
             environmentRef: test
             deployToAll: false
             infrastructureDefinitions:
-              - identifier: ec2_infra
+              - identifier: adfad
           execution:
             steps:
               - step:
@@ -106,6 +106,7 @@ pipeline:
 
                           echo "Starting new container..."
                           docker run -d --name spring-test -p 80:80 230103375/spring-test:latest
+            rollbackSteps: []
         failureStrategies:
           - onFailure:
               errors:
