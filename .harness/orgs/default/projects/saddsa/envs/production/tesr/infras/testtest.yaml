@@ -1,0 +1,17 @@
+infrastructureDefinition:
+  name: testtest
+  identifier: testtest
+  orgIdentifier: default
+  projectIdentifier: saddsa
+  environmentRef: tesr
+  deploymentType: Ssh
+  type: SshWinRmAws
+  spec:
+    credentialsRef: sshkey
+    connectorRef: ec2
+    region: us-east-1
+    awsInstanceFilter:
+      tags: {}
+    hostConnectionType: PublicIP
+    instanceType: Aws
+  allowSimultaneousDeployments: false
