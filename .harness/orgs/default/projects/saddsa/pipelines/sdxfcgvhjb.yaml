@@ -1,0 +1,51 @@
+pipeline:
+  name: sdxfcgvhjb
+  identifier: sdxfcgvhjb
+  projectIdentifier: saddsa
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: github_connector
+        repoName: jenkins-test-api
+        build: <+input>
+  stages:
+    - stage:
+        name: fcvgbh
+        identifier: fcvgbh
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  name: Build with Maven
+                  identifier: MavenBuild
+                  type: Run
+                  spec:
+                    image: maven:3.9.3-eclipse-temurin-17
+                    shell: Sh
+                    command: |
+                      mvn clean package -DskipTests
+              - step:
+                  name: Build and Push Docker Image
+                  identifier: DockerBuildPush
+                  type: BuildAndPushDockerRegistry
+                  spec:
+                    connectorRef: dockerhub-kz
+                    repo: 230103375/spring-test
+                    tags:
+                      - latest
+                    dockerfile: Dockerfile
+                    context: .
