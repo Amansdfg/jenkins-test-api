@@ -61,6 +61,17 @@ pipeline:
           deploymentType: Ssh
           service:
             serviceRef: ec2_service
+            serviceInputs:
+              serviceDefinition:
+                type: Ssh
+                spec:
+                  artifacts:
+                    primary:
+                      sources:
+                        - identifier: sasdasdasd
+                          type: DockerRegistry
+                          spec:
+                            tag: <+input>
           environment:
             environmentRef: test
             deployToAll: false
