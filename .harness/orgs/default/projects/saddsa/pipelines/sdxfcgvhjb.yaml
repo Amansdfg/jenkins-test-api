@@ -12,7 +12,7 @@ pipeline:
         build: <+input>
   stages:
     - stage:
-        name: fcvgbh
+        name: ci
         identifier: fcvgbh
         description: ""
         type: CI
@@ -21,6 +21,7 @@ pipeline:
           caching:
             enabled: true
             override: false
+            paths: []
           platform:
             os: Linux
             arch: Amd64
@@ -49,3 +50,5 @@ pipeline:
                       - latest
                     dockerfile: Dockerfile
                     context: .
+          buildIntelligence:
+            enabled: false
