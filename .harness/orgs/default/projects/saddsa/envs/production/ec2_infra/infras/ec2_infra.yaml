@@ -10,7 +10,10 @@ infrastructureDefinition:
     credentialsRef: shhkeyec2
     connectorRef: ssh_connector_to_ec2
     region: us-east-1
-    awsInstanceFilter: {}
+    awsInstanceFilter:
+      tags: {}
+      vpcs:
+        - vpc-073fe7b1aaaedde01
     hostConnectionType: PublicIP
     instanceType: Aws
   allowSimultaneousDeployments: false
