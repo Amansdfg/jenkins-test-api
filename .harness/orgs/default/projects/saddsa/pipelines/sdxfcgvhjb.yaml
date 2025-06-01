@@ -116,7 +116,7 @@ pipeline:
                           docker rm spring-test || true
 
                           echo "Starting new container..."
-                          docker run -d --name spring-test -p 80:80 230103375/spring-test:lastest
+                          docker run -d --name spring-test -p 80:80 230103375/spring-test:latest
             rollbackSteps: []
         failureStrategies:
           - onFailure:
