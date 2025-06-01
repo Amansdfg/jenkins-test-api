@@ -102,7 +102,7 @@ pipeline:
                   timeout: 10m
                   spec:
                     shell: Bash
-                    onDelegate: true
+                    onDelegate: false
                     commandUnits:
                       - name: run_deploy
                         identifier: run_deploy
