@@ -52,3 +52,63 @@ pipeline:
                     context: .
           buildIntelligence:
             enabled: false
+    - stage:
+        name: cd
+        identifier: cd
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Ssh
+          service:
+            serviceRef: ec2_service
+          environment:
+            environmentRef: test
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: ec2_infra
+          execution:
+            steps:
+              - step:
+                  type: HarnessApproval
+                  name: Approve before deploy
+                  identifier: approval_step
+                  timeout: 1d
+                  spec:
+                    approvalMessage: Please approve the deployment
+                    includePipelineExecutionHistory: true
+                    isAutoRejectEnabled: false
+                    approvers:
+                      userGroups:
+                        - account._account_all_users
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                    approverInputs: []
+              - step:
+                  type: Command
+                  name: Deploy Docker Container
+                  identifier: deploy_docker
+                  timeout: 10m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    commandUnits:
+                      - name: run_deploy
+                        identifier: run_deploy
+                        type: Script
+                        workingDirectory: /home/ec2-user
+                        command: |
+                          echo "Pulling Docker image..."
+                          docker pull 230103375/spring-test:latest
+
+                          echo "Stopping old container..."
+                          docker stop spring-test || true
+                          docker rm spring-test || true
+
+                          echo "Starting new container..."
+                          docker run -d --name spring-test -p 80:80 230103375/spring-test:latest
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
