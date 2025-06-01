@@ -71,7 +71,7 @@ pipeline:
                         - identifier: docker_hub_source
                           type: DockerRegistry
                           spec:
-                            tag: <+input>
+                            tag: build-<+pipeline.sequenceId>
           environment:
             environmentRef: ec2_infra
             gitBranch: master
@@ -116,7 +116,7 @@ pipeline:
                           docker rm spring-test || true
 
                           echo "Starting new container..."
-                          docker run -d --name spring-test -p 80:80 230103375/spring-test:latest
+                          docker run -d --name spring-test -p 80:80 230103375/spring-test:build-<+pipeline.sequenceId>
             rollbackSteps: []
         failureStrategies:
           - onFailure:
