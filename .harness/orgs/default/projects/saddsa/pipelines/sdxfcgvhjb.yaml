@@ -73,7 +73,8 @@ pipeline:
                           spec:
                             tag: <+input>
           environment:
-            environmentRef: test
+            environmentRef: ec2_infra
+            gitBranch: master
             deployToAll: false
             infrastructureDefinitions:
               - identifier: ec2_infra
