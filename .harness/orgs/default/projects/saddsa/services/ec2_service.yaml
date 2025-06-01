@@ -6,7 +6,7 @@ service:
     spec:
       artifacts:
         primary:
-          primaryArtifactRef: sasdasdasd
+          primaryArtifactRef: docker_hub_source
           sources:
             - spec:
                 connectorRef: dockerhubkz
