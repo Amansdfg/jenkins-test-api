@@ -7,7 +7,7 @@ infrastructureDefinition:
   deploymentType: Ssh
   type: SshWinRmAws
   spec:
-    credentialsRef: shhkeyec2
+    credentialsRef: sshcred
     connectorRef: ssh_connector_to_ec2
     region: us-east-1
     awsInstanceFilter:
