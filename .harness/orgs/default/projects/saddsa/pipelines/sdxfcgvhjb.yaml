@@ -119,14 +119,14 @@ pipeline:
                             spec:
                               script: |-
                                 echo "Pulling Docker image..."
-                                docker pull 230103375/spring-test:latest
+                                sudo docker pull 230103375/spring-test:latest
 
-                                echo "Stopping old container..."
-                                docker stop spring-test || true
-                                docker rm spring-test || true
+                                sudo echo "Stopping old container..."
+                                sudo docker stop spring-test || true
+                                sudo docker rm spring-test || true
 
                                 echo "Starting new container..."
-                                docker run -d --name spring-test -p 80:80 230103375/spring-test:latest
+                                sudo docker run -d --name spring-test -p 80:8080 230103375/spring-test:latest
                     environmentVariables: []
                     outputVariables: []
             rollbackSteps: []
