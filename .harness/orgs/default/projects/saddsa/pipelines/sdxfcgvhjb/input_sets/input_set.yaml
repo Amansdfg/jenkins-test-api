@@ -29,7 +29,7 @@ inputSet:
                           - identifier: docker_hub_source
                             type: DockerRegistry
                             spec:
-                              tag: latest
+                              tag: <+pipeline.sequenceId>
             environment:
               infrastructureDefinitions:
                 - identifier: ec2_infra
