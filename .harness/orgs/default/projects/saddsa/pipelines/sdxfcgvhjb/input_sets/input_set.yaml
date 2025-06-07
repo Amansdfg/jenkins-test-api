@@ -1,0 +1,39 @@
+inputSet:
+  name: input_set
+  identifier: input_set
+  orgIdentifier: default
+  projectIdentifier: saddsa
+  pipeline:
+    identifier: sdxfcgvhjb
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: master
+    stages:
+      - stage:
+          identifier: cd
+          type: Deployment
+          spec:
+            service:
+              serviceInputs:
+                serviceDefinition:
+                  type: Ssh
+                  spec:
+                    artifacts:
+                      primary:
+                        sources:
+                          - identifier: docker_hub_source
+                            type: DockerRegistry
+                            spec:
+                              tag: latest
+            environment:
+              infrastructureDefinitions:
+                - identifier: ec2_infra
+                  inputs:
+                    identifier: ec2_infra
+                    type: SshWinRmAws
+                    spec:
+                      targetedHosts: <+input>
