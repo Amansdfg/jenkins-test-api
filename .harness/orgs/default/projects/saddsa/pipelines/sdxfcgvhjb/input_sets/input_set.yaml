@@ -1,5 +1,6 @@
 inputSet:
   name: input_set
+  tags: {}
   identifier: input_set
   orgIdentifier: default
   projectIdentifier: saddsa
@@ -36,4 +37,5 @@ inputSet:
                     identifier: ec2_infra
                     type: SshWinRmAws
                     spec:
-                      targetedHosts: <+input>
+                      targetedHosts:
+                        - 13.218.240.63
