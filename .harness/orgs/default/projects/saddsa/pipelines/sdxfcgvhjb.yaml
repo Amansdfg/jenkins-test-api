@@ -47,7 +47,7 @@ pipeline:
                     connectorRef: dockerhubkz
                     repo: 230103375/spring-test
                     tags:
-                      - latest
+                      - <+pipeline.sequenceId>
                     dockerfile: Dockerfile
                     context: .
           buildIntelligence:
@@ -124,14 +124,14 @@ pipeline:
                             spec:
                               script: |-
                                 echo "Pulling Docker image..."
-                                sudo docker pull 230103375/spring-test:latest
+                                sudo docker pull 230103375/spring-test:<+pipeline.sequenceId>
 
                                 sudo echo "Stopping old container..."
                                 sudo docker stop spring-test || true
                                 sudo docker rm spring-test || true
 
                                 echo "Starting new container..."
-                                sudo docker run -d --name spring-test -p 80:8080 230103375/spring-test:latest
+                                sudo docker run -d --name spring-test -p 80:8080 230103375/spring-test:<+pipeline.sequenceId>
                     environmentVariables: []
                     outputVariables: []
             rollbackSteps: []
