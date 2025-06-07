@@ -9,7 +9,7 @@ public class MyController {
     @GetMapping("/hello")
     public String getHello() {
 
-        return "Hello from EC2! \uD83C\uDF0D\n";
+        return "Hello from Aman Kalabay! \uD83C\uDF0D\n";
     }
 
 }
