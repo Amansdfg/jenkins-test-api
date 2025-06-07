@@ -7,13 +7,11 @@ infrastructureDefinition:
   deploymentType: Ssh
   type: SshWinRmAws
   spec:
-    credentialsRef: sshcred
+    credentialsRef: my_target_ec2
     connectorRef: ssh_connector_to_ec2
     region: us-east-1
-    awsInstanceFilter:
-      tags: {}
-      vpcs:
-        - vpc-073fe7b1aaaedde01
     hostConnectionType: PublicIP
-    instanceType: Aws
+    instanceType: Asg
+    asgName: ""
+    targetedHosts: <+input>
   allowSimultaneousDeployments: false
