@@ -78,6 +78,11 @@ pipeline:
             deployToAll: false
             infrastructureDefinitions:
               - identifier: ec2_infra
+                inputs:
+                  identifier: ec2_infra
+                  type: SshWinRmAws
+                  spec:
+                    targetedHosts: <+input>
           execution:
             steps:
               - step:
